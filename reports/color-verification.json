@@ -1,0 +1,166 @@
+{
+  "generatedAt": "2026-11-24T17:28:05.719Z",
+  "standard": "CIEDE2000 / D65, 8-bit sRGB output, PQ ST.2084 BT.2020 input",
+  "skinPatchCount": 20,
+  "criteria": {
+    "meanDeltaE00Max": 3,
+    "stableFrameDeltaE00Max": 1.5,
+    "cutFrameDeltaE00Max": 2.5
+  },
+  "pass": true,
+  "skin": {
+    "meanDeltaE00": 1.119420074421431,
+    "maxDeltaE00": 1.829288392526606,
+    "p95DeltaE00": 1.829288392526606,
+    "pass": true,
+    "rows": [
+      {
+        "id": "cc-dark",
+        "group": "colorchecker",
+        "L": 37.99,
+        "de": 0.6771505476405419
+      },
+      {
+        "id": "cc-light",
+        "group": "colorchecker",
+        "L": 65.71,
+        "de": 1.8151497776014363
+      },
+      {
+        "id": "fitzVI-cool",
+        "group": "fitzpatrick-VI",
+        "L": 36.6,
+        "de": 0.7835120053500355
+      },
+      {
+        "id": "fitzVI-neutral",
+        "group": "fitzpatrick-VI",
+        "L": 36,
+        "de": 0.8552562256678584
+      },
+      {
+        "id": "fitzVI-warm",
+        "group": "fitzpatrick-VI",
+        "L": 35.6,
+        "de": 0.7776398380945764
+      },
+      {
+        "id": "fitzV-cool",
+        "group": "fitzpatrick-V",
+        "L": 43.6,
+        "de": 0.6376412416175741
+      },
+      {
+        "id": "fitzV-neutral",
+        "group": "fitzpatrick-V",
+        "L": 43,
+        "de": 0.8110242452514633
+      },
+      {
+        "id": "fitzV-warm",
+        "group": "fitzpatrick-V",
+        "L": 42.6,
+        "de": 0.6499293767021015
+      },
+      {
+        "id": "fitzIV-cool",
+        "group": "fitzpatrick-IV",
+        "L": 50.6,
+        "de": 0.5546347000324658
+      },
+      {
+        "id": "fitzIV-neutral",
+        "group": "fitzpatrick-IV",
+        "L": 50,
+        "de": 0.553224620583873
+      },
+      {
+        "id": "fitzIV-warm",
+        "group": "fitzpatrick-IV",
+        "L": 49.6,
+        "de": 0.5831545131676883
+      },
+      {
+        "id": "fitzIII-cool",
+        "group": "fitzpatrick-III",
+        "L": 57.6,
+        "de": 1.1547711522190285
+      },
+      {
+        "id": "fitzIII-neutral",
+        "group": "fitzpatrick-III",
+        "L": 57,
+        "de": 1.095625387856045
+      },
+      {
+        "id": "fitzIII-warm",
+        "group": "fitzpatrick-III",
+        "L": 56.6,
+        "de": 0.9215656970853146
+      },
+      {
+        "id": "fitzII-cool",
+        "group": "fitzpatrick-II",
+        "L": 64.6,
+        "de": 1.829288392526606
+      },
+      {
+        "id": "fitzII-neutral",
+        "group": "fitzpatrick-II",
+        "L": 64,
+        "de": 1.7189313360567098
+      },
+      {
+        "id": "fitzII-warm",
+        "group": "fitzpatrick-II",
+        "L": 63.6,
+        "de": 1.7978257238316084
+      },
+      {
+        "id": "fitzI-cool",
+        "group": "fitzpatrick-I",
+        "L": 72.6,
+        "de": 1.6858518203607613
+      },
+      {
+        "id": "fitzI-neutral",
+        "group": "fitzpatrick-I",
+        "L": 72,
+        "de": 1.7645206769933963
+      },
+      {
+        "id": "fitzI-warm",
+        "group": "fitzpatrick-I",
+        "L": 71.6,
+        "de": 1.7217042097895394
+      }
+    ]
+  },
+  "sceneBattery": [
+    {
+      "scene": "portrait",
+      "mean": 1.119420074421431,
+      "max": 1.829288392526606
+    },
+    {
+      "scene": "neonNight",
+      "mean": 1.517981874607846,
+      "max": 4.022564181770639
+    },
+    {
+      "scene": "snow",
+      "mean": 2.2166213494401985,
+      "max": 6.414001463840201
+    }
+  ],
+  "gpuShaderApproxVsExact": {
+    "mean": 0.24301099204835608,
+    "max": 0.6963853786162876
+  },
+  "hlgApproxMeanDE": 0.17614096035241827,
+  "temporal": {
+    "stableMaxDE": 0,
+    "cutMaxDE": 0.5995719412138661,
+    "convergenceResidualDE": 0
+  }
+}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d5c52'/%3E%3Ctext x='16' y='22' font-size='15' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EB%3C/text%3E%3C/svg%3E" />
+    <title>验收基准 · HDR→SDR</title>
+  </head>
+  <body class="bench-body">
+    <header style="margin-bottom:18px">
+      <h1 style="margin:0 0 6px">HDR→SDR 验收基准</h1>
+      <p class="muted" style="margin:0">肤色 CIEDE2000 + 时序稳定性（TS 参考管线） · 3840×2160 WebGL2 片元管线吞吐</p>
+    </header>
+
+    <section class="bench-card">
+      <h2>实时渲染预览（GPU 测试源）</h2>
+      <div class="bench-canvas-wrap"><canvas id="bench-canvas" width="1280" height="720"></canvas></div>
+    </section>
+
+    <section class="bench-card">
+      <h2>运行状态</h2>
+      <pre id="bench-log">等待开始…</pre>
+    </section>
+
+    <section class="bench-card">
+      <h2>机器结果（JSON）</h2>
+      <pre id="bench-json">—</pre>
+    </section>
+
+    <script type="module" src="/src/bench.ts"></script>
+  </body>
+</html>

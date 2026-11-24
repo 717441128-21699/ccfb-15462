@@ -1,0 +1,53 @@
+{
+  "status": "done",
+  "generatedAt": "2026-11-24T17:22:09.245Z",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+  "gpuRenderer": "ANGLE (AMD, AMD Radeon 780M Graphics (0x000015BF) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "softwareRendering": false,
+  "color": {
+    "pass": true,
+    "patchCount": 20,
+    "meanDeltaE00": 1.1194200744214318,
+    "maxDeltaE00": 1.8292883925266064,
+    "p95DeltaE00": 1.8292883925266064,
+    "sceneBattery": [
+      {
+        "scene": "portrait",
+        "mean": 1.1194200744214318,
+        "max": 1.8292883925266064
+      },
+      {
+        "scene": "neonNight",
+        "mean": 1.5179818746078455,
+        "max": 4.0225641817706395
+      },
+      {
+        "scene": "snow",
+        "mean": 2.216621349440197,
+        "max": 6.414001463840205
+      }
+    ],
+    "gpuApprox": {
+      "mean": 0.24301099204835513,
+      "max": 0.6963853786162452
+    },
+    "hlgApproxMeanDE": 0.17614096035241872,
+    "temporal": {
+      "stableMaxDE": 0,
+      "cutMaxDE": 0.5995719412137981,
+      "convergenceResidualDE": 0
+    }
+  },
+  "fps": {
+    "pass": true,
+    "width": 3840,
+    "height": 2160,
+    "frames": 120,
+    "wallFps": 276.62517292113995,
+    "conversionFps": 276.62517292113995,
+    "fullFps": 142.7891480085466,
+    "frameMs": 3.614999999602636,
+    "gpuMs": null
+  },
+  "browserErrors": []
+}

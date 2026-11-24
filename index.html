@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233a63d8'/%3E%3Ctext x='16' y='22' font-size='15' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EH%3C/text%3E%3C/svg%3E" />
+    <title>HDR → SDR 短剧调色工作台 · PQ/HLG 动态色调映射</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">HDR<span>→</span>SDR</span>
+        <div class="brand-text">
+          <strong>短剧调色工作台</strong>
+          <em>BT.2020 · PQ/HLG 识别 · 场景动态映射 · 肤色保护</em>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="btn-add" class="btn">＋ 添加素材</button>
+        <button id="btn-batch" class="btn btn-primary">批量转出 <span id="batch-count" class="badge">0</span></button>
+        <a class="btn btn-ghost" href="./bench.html" target="_blank">4K 基准页</a>
+      </div>
+      <input id="file-input" type="file" accept="video/*,.mp4,.mov,.m4v,.webm" multiple hidden />
+    </header>
+
+    <main class="workspace">
+      <!-- 左：素材管理 -->
+      <aside class="panel panel-left">
+        <div class="panel-head">
+          <h2>素材管理</h2>
+          <span id="lib-count" class="muted"></span>
+        </div>
+        <div id="dropzone" class="dropzone">
+          <div class="dz-icon">⬆</div>
+          <p>拖入手机 HDR 样片</p>
+          <p class="muted small">MP4 / MOV，自动解析 PQ / HLG 与 BT.2020</p>
+        </div>
+        <div class="lib-section">
+          <h3>内置测试片段 <span class="muted small">（脚本生成：逆光人像 / 霓虹 / 雪地）</span></h3>
+          <div id="sample-list" class="mat-list"></div>
+        </div>
+        <div class="lib-section">
+          <h3>我的素材</h3>
+          <div id="user-list" class="mat-list">
+            <p class="muted small pad">还没有添加文件</p>
+          </div>
+        </div>
+        <div class="lib-section">
+          <h3>实时 GPU 测试源</h3>
+          <div id="gpu-source-list" class="mat-list"></div>
+        </div>
+      </aside>
+
+      <!-- 中：预览 -->
+      <section class="stage-wrap">
+        <div class="stage-toolbar">
+          <div class="seg" id="view-seg">
+            <button data-view="compare" class="active">分屏对照</button>
+            <button data-view="final">仅成片</button>
+            <button data-view="source">仅基准直转</button>
+          </div>
+          <label class="baseline-pick muted small">
+            基准侧
+            <select id="baseline-mode">
+              <option value="hardclip">BT.2408 硬裁切</option>
+              <option value="hazy">灰蒙反例（差平台转码）</option>
+            </select>
+          </label>
+          <div class="spacer"></div>
+          <div id="hdr-badges" class="badges"></div>
+        </div>
+
+        <div id="canvas-shell" class="canvas-shell">
+          <div id="stage-frame" class="stage-frame">
+            <canvas id="gl-canvas"></canvas>
+            <div id="compare-divider" class="compare-divider">
+              <div class="divider-line"></div>
+              <div class="divider-handle">⇔</div>
+            </div>
+            <span class="side-label side-label-l">成片 SDR</span>
+            <span class="side-label side-label-r">原片 / 基准</span>
+          </div>
+          <div id="gl-error" class="gl-error" hidden></div>
+          <div id="empty-hint" class="empty-hint">
+            <p>从左侧选择一个素材开始</p>
+            <p class="muted small">内置片段由 ffmpeg/x265 编码为 10bit BT.2020 PQ/HLG</p>
+          </div>
+        </div>
+
+        <div class="transport">
+          <button id="btn-play" class="btn btn-icon" title="播放/暂停">▶</button>
+          <span id="tc-cur" class="tc">00:00</span>
+          <input id="seek" type="range" min="0" max="1000" value="0" class="seek" />
+          <span id="tc-dur" class="tc">00:00</span>
+          <button id="btn-loop" class="btn btn-icon" title="单素材循环">🔁</button>
+          <button id="btn-png" class="btn small">导出当前帧 PNG</button>
+        </div>
+
+        <div class="hud">
+          <div class="hud-item"><span class="muted">场景白位</span><b id="hud-white">— nit</b></div>
+          <div class="hud-item"><span class="muted">中灰</span><b id="hud-mid">— nit</b></div>
+          <div class="hud-item"><span class="muted">切镜</span><b id="hud-cut">—</b></div>
+          <div class="hud-item"><span class="muted">渲染</span><b id="hud-fps">— fps</b></div>
+          <div class="hud-item"><span class="muted">GPU</span><b id="hud-gpu" class="small">—</b></div>
+        </div>
+      </section>
+
+      <!-- 右：参数 / 验收 -->
+      <aside class="panel panel-right">
+        <div class="tabs">
+          <button class="tab active" data-tab="params">映射参数</button>
+          <button class="tab" data-tab="accept">验收指标</button>
+        </div>
+
+        <div id="tab-params" class="tab-body">
+          <div class="detect-card" id="detect-card">
+            <h3>HDR 识别</h3>
+            <p id="detect-reason" class="muted small">未加载素材</p>
+            <label class="row small">手动解释
+              <select id="transfer-override">
+                <option value="auto">自动（按元数据）</option>
+                <option value="pq">强制 PQ (ST 2084)</option>
+                <option value="hlg">强制 HLG (BT.2100)</option>
+                <option value="bt709">按 SDR/BT.709</option>
+              </select>
+            </label>
+          </div>
+          <div id="param-groups"></div>
+          <div class="param-actions">
+            <button id="btn-reset" class="btn">恢复默认</button>
+          </div>
+        </div>
+
+        <div id="tab-accept" class="tab-body" hidden>
+          <div class="accept-card">
+            <h3>肤色 ΔE00 验收</h3>
+            <p class="muted small">20 个 Fitzpatrick 肤色片，走与 GPU 相同的 TS 参考管线（PQ→曲线→Lab 色域投影→8bit sRGB）。</p>
+            <button id="btn-run-de" class="btn btn-primary wide">运行 ΔE00 测试</button>
+            <div id="de-result" class="accept-result"></div>
+          </div>
+          <div class="accept-card">
+            <h3>4K @60fps 渲染基准</h3>
+            <p class="muted small">3840×2160 离屏 FBO，含场景生成 / 分析回读 / 模糊 / 完整片元管线，120 帧。</p>
+            <button id="btn-run-fps" class="btn btn-primary wide">运行 4K 基准</button>
+            <div id="fps-result" class="accept-result"></div>
+          </div>
+          <div class="accept-card">
+            <h3>命令行复现</h3>
+            <pre class="cmd">npm run verify:color
+npm run generate:clips
+npm run build
+npm run bench:fps</pre>
+            <p class="muted small">完整报告写入 <code>reports/</code>。</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- 批量转出抽屉 -->
+    <div id="batch-drawer" class="drawer" hidden>
+      <div class="drawer-mask" data-close></div>
+      <div class="drawer-body">
+        <div class="drawer-head">
+          <h2>批量转出 SDR（BT.709）</h2>
+          <button class="btn btn-icon" data-close>✕</button>
+        </div>
+        <div class="export-opts">
+          <label>输出分辨率
+            <select id="export-res">
+              <option value="source">跟随源（最高 4K）</option>
+              <option value="1920">1080p</option>
+              <option value="1280">720p</option>
+            </select>
+          </label>
+          <label>帧率
+            <select id="export-fps">
+              <option value="30">30 fps</option>
+              <option value="24">24 fps</option>
+              <option value="60">60 fps（GPU 源）</option>
+            </select>
+          </label>
+          <label>封装
+            <select id="export-format">
+              <option value="webm-vp9">WebM / VP9</option>
+              <option value="webm-vp8">WebM / VP8</option>
+              <option value="png">PNG 帧（仅当前帧）</option>
+            </select>
+          </label>
+          <button id="btn-start-batch" class="btn btn-primary">开始队列转出</button>
+        </div>
+        <div id="batch-list" class="batch-list"></div>
+        <p class="muted small">视频素材通过实时播放 + canvas 采集编码（浏览器 MediaRecorder 不支持离线逐帧）；GPU 测试源按所选帧率确定性渲染。</p>
+      </div>
+    </div>
+
+    <div id="toasts" class="toasts"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "generatedAt": "2026-11-24T17:13:38.876Z",
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "frames": 60,
+  "clips": [
+    {
+      "file": "backlit-portrait-pq.mp4",
+      "scene": "backlit-portrait",
+      "transfer": "pq",
+      "primaries": "bt2020",
+      "title": "逆光人像 · PQ"
+    },
+    {
+      "file": "neon-night-pq.mp4",
+      "scene": "neon-night",
+      "transfer": "pq",
+      "primaries": "bt2020",
+      "title": "夜景霓虹 · PQ"
+    },
+    {
+      "file": "snow-pq.mp4",
+      "scene": "snow",
+      "transfer": "pq",
+      "primaries": "bt2020",
+      "title": "雪地 · PQ"
+    },
+    {
+      "file": "scene-cuts-pq.mp4",
+      "scene": "cuts",
+      "transfer": "pq",
+      "primaries": "bt2020",
+      "title": "三镜硬切合集 · PQ"
+    },
+    {
+      "file": "backlit-portrait-hlg.mp4",
+      "scene": "backlit-portrait",
+      "transfer": "hlg",
+      "primaries": "bt2020",
+      "title": "逆光人像 · HLG"
+    }
+  ]
+}

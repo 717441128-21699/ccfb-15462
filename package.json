@@ -1,0 +1,25 @@
+{
+  "name": "hdr-sdr-workbench",
+  "version": "1.0.0",
+  "private": true,
+  "description": "手机 HDR 短剧转 SDR 的 WebGL2 工作台：PQ/HLG 识别、场景级动态色调映射、肤色保护色域压缩、镜头切换平滑过渡、对照预览与批量转出",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "test": "tsx scripts/verify-color.ts",
+    "build": "tsc --noEmit && vite build",
+    "build:only": "vite build",
+    "preview": "vite preview --port 47831 --strictPort",
+    "generate:clips": "tsx scripts/generate-clips.ts",
+    "verify:color": "tsx scripts/verify-color.ts",
+    "bench:fps": "node scripts/bench-browser.mjs",
+    "verify": "npm run verify:color && npm run build && npm run bench:fps"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "puppeteer-core": "^24.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7"
+  }
+}
